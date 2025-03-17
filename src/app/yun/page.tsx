@@ -63,6 +63,10 @@ export default function Wadduang() {
         backgroundAudio.loop = true;
         backgroundAudio.volume = 0.3;
         setBgAudio(backgroundAudio);
+        // Add error handler for background audio
+        backgroundAudio.onerror = () => {
+            console.error("Error playing background audio");
+        };
 
         // Initialize transition sound
         const transitionAudio = new Audio('/wind-transition.mp3');
