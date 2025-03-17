@@ -55,7 +55,7 @@ export default function Wadduang() {
     const [answers, setAnswers] = useState({});
     const [isTransitioning, setIsTransitioning] = useState(false);
     const [audio, setAudio] = useState<HTMLAudioElement | null>(null);
-    const [bgAudio, setBgAudio] = useState<HTMLAudioElement | null>(null);
+    const [_, setBgAudio] = useState<HTMLAudioElement | null>(null);
 
     useEffect(() => {
         // Initialize background audio
@@ -63,17 +63,13 @@ export default function Wadduang() {
         backgroundAudio.loop = true;
         backgroundAudio.volume = 0.3;
         setBgAudio(backgroundAudio);
-        // Add error handler for background audio
-        backgroundAudio.onerror = () => {
-            console.error("Error playing background audio");
-        };
 
         // Initialize transition sound
         const transitionAudio = new Audio('/wind-transition.mp3');
         setAudio(transitionAudio);
 
         // Start playing background sound
-        backgroundAudio.play().catch(e => console.log("Audio autoplay blocked"));
+        backgroundAudio.play().catch(_ => console.log("Audio autoplay blocked"));
 
         return () => {
             backgroundAudio.pause();
