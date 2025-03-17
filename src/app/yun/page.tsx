@@ -1,5 +1,5 @@
 "use client"
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from 'next/image';
 
 const questions = [
@@ -53,13 +53,46 @@ const questions = [
 export default function Wadduang() {
     const [currentId, setCurrentId] = useState<number | null>(1);
     const [answers, setAnswers] = useState({});
+    const [isTransitioning, setIsTransitioning] = useState(false);
+    const [audio, setAudio] = useState<HTMLAudioElement | null>(null);
+    const [bgAudio, setBgAudio] = useState<HTMLAudioElement | null>(null);
 
-    const handleAnswer = (answer: string, nextId: number | null) => {
+    useEffect(() => {
+        // Initialize background audio
+        const backgroundAudio = new Audio('/forest-night.mp3');
+        backgroundAudio.loop = true;
+        backgroundAudio.volume = 0.3;
+        setBgAudio(backgroundAudio);
+
+        // Initialize transition sound
+        const transitionAudio = new Audio('/wind-transition.mp3');
+        setAudio(transitionAudio);
+
+        // Start playing background sound
+        backgroundAudio.play().catch(e => console.log("Audio autoplay blocked"));
+
+        return () => {
+            backgroundAudio.pause();
+            backgroundAudio.currentTime = 0;
+        };
+    }, []);
+
+    const handleAnswer = async (answer: string, nextId: number | null) => {
+        setIsTransitioning(true);
+        if (audio) {
+            audio.currentTime = 0;
+            await audio.play();
+        }
+
         if (currentId !== null) {
             setAnswers((prev) => ({ ...prev, [currentId]: answer }));
         }
-        if (nextId) setCurrentId(nextId);
-        else setCurrentId(null);
+
+        setTimeout(() => {
+            if (nextId) setCurrentId(nextId);
+            else setCurrentId(null);
+            setIsTransitioning(false);
+        }, 1000);
     };
 
     if (currentId === null) {
@@ -70,28 +103,29 @@ export default function Wadduang() {
 
     return (
         <div className="min-h-screen flex flex-col items-center justify-center bg-[#0a0008] bg-[url('/forest-bg.jpg')] bg-cover bg-center bg-blend-overlay py-8 px-4">
-            <div className="rounded-full overflow-hidden shadow-[0_0_30px_rgba(147,51,234,0.5)] animate-pulse">
+            <div className={`rounded-full overflow-hidden shadow-[0_0_30px_rgba(147,51,234,0.5)] animate-pulse transition-opacity duration-1000 ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}>
                 <Image
                     src="/witch.jpg"
                     alt="Fortune teller"
-                    width={160}
-                    height={160}
+                    width={150}
+                    height={150}
                     className="object-cover w-full h-full"
                 />
             </div>
             {currentQuestion ? (
                 <>
-                    <div className="w-[80%] bg-[#1a0028]/80 text-[#e9b8ff] py-4 px-10 rounded-2xl text-center m-5 shadow-[0_0_15px_rgba(147,51,234,0.3)] backdrop-blur-sm">
+                    <div className={`w-[80%] bg-[#1a0028]/80 text-[#e9b8ff] py-4 px-10 rounded-2xl text-center m-5 shadow-[0_0_15px_rgba(147,51,234,0.3)] backdrop-blur-sm transition-all duration-1000 ${isTransitioning ? 'opacity-0 transform translate-y-10' : 'opacity-100 transform translate-y-0'}`}>
                         <h2 className="text-xl font-medium italic">
                             {currentQuestion.question}
                         </h2>
                     </div>
-                    <div className="w-full space-y-3 flex flex-col items-center">
+                    <div className={`w-full space-y-3 flex flex-col items-center transition-all duration-1000 ${isTransitioning ? 'opacity-0 transform translate-y-10' : 'opacity-100 transform translate-y-0'}`}>
                             {currentQuestion.options.map((opt, index) => (
                                 <button 
                                 className="w-[80%] bg-[#2d0042]/70 text-[#e9b8ff] py-4 px-10 rounded-full text-l font-medium flex justify-center hover:bg-[#3a0055]/70 transition-all duration-300 hover:shadow-[0_0_15px_rgba(147,51,234,0.3)] backdrop-blur-sm"
                                 key={index}
-                                    onClick={() => handleAnswer(opt.text, opt.nextId)}
+                                disabled={isTransitioning}
+                                onClick={() => handleAnswer(opt.text, opt.nextId)}
                                 >
                                 {opt.text}
                                 </button>
