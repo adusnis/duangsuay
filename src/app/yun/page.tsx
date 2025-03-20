@@ -82,7 +82,7 @@ export default function Yun() {
 
     return (
         <div className="min-h-screen flex flex-col items-center justify-center bg-[#0a0008] bg-[url('/forest-bg.jpg')] bg-cover bg-center bg-blend-overlay py-8 px-4">
-            <div className={`rounded-full overflow-hidden shadow-[0_0_30px_rgba(147,51,234,0.5)] animate-pulse transition-opacity duration-1000 ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}>
+            <div className="rounded-full overflow-hidden shadow-[0_0_30px_rgba(147,51,234,0.5)] animate-pulse mb-8">
                 <Image
                     src="/witch.jpg"
                     alt="Fortune teller"
@@ -91,14 +91,15 @@ export default function Yun() {
                     className="object-cover w-full h-full"
                 />
             </div>
+
             {currentQuestion ? (
-                <>
-                    <div className={`w-[80%] bg-[#1a0028]/80 text-[#e9b8ff] py-4 px-10 rounded-2xl text-center m-5 shadow-[0_0_15px_rgba(147,51,234,0.3)] backdrop-blur-sm transition-all duration-1000 ${isTransitioning ? 'opacity-0 transform translate-y-10' : 'opacity-100 transform translate-y-0'}`}>
+                <div className={`w-full flex flex-col items-center transition-all duration-1000 ${isTransitioning ? 'opacity-0 transform translate-y-10' : 'opacity-100 transform translate-y-0'}`}>
+                    <div className="w-[80%] bg-[#1a0028]/80 text-[#e9b8ff] py-4 px-10 rounded-2xl text-center m-5 shadow-[0_0_15px_rgba(147,51,234,0.3)] backdrop-blur-sm">
                         <h2 className="text-xl font-medium italic">
                             {currentQuestion.question}
                         </h2>
                     </div>
-                    <div className={`w-full space-y-3 flex flex-col items-center transition-all duration-1000 ${isTransitioning ? 'opacity-0 transform translate-y-10' : 'opacity-100 transform translate-y-0'}`}>
+                    <div className="w-full space-y-3 flex flex-col items-center">
                         {currentQuestion.options.map((opt, index) => (
                             <button 
                             className="w-[80%] bg-[#2d0042]/70 text-[#e9b8ff] py-4 px-10 rounded-full text-l font-medium flex justify-center hover:bg-[#3a0055]/70 transition-all duration-300 hover:shadow-[0_0_15px_rgba(147,51,234,0.3)] backdrop-blur-sm"
@@ -110,7 +111,7 @@ export default function Yun() {
                             </button>
                         ))}
                     </div>
-                </>
+                </div>
             ) : (
                 <div className="text-[#e9b8ff] text-xl">กำลังโหลด...</div>
             )}
