@@ -1,6 +1,8 @@
 "use client"
 import { useState, useEffect } from "react";
 import Image from 'next/image';
+import ResultYan from "@/components/ResultYan";
+import { useAudio } from "@/contexts/AudioContext";
 
 const questions = [
     {
@@ -50,7 +52,8 @@ const questions = [
     }
 ];
 
-export default function Wadduang() {
+export default function Yun() {
+    const { playEffect } = useAudio();
     const [currentId, setCurrentId] = useState<number | null>(1);
     const [answers, setAnswers] = useState({});
     const [isTransitioning, setIsTransitioning] = useState(false);
@@ -71,6 +74,8 @@ export default function Wadduang() {
         // Start playing background sound
         backgroundAudio.play().catch(_ => console.log("Audio autoplay blocked"));
 
+        playEffect('wind');
+
         return () => {
             backgroundAudio.pause();
             backgroundAudio.currentTime = 0;
@@ -79,10 +84,7 @@ export default function Wadduang() {
 
     const handleAnswer = async (answer: string, nextId: number | null) => {
         setIsTransitioning(true);
-        if (audio) {
-            audio.currentTime = 0;
-            await audio.play();
-        }
+        playEffect('wind');
 
         if (currentId !== null) {
             setAnswers((prev) => ({ ...prev, [currentId]: answer }));
@@ -96,7 +98,7 @@ export default function Wadduang() {
     };
 
     if (currentId === null) {
-        return <div className="text-center p-5 text-2xl font-bold text-purple-300 bg-black/90 rounded-lg shadow-[0_0_15px_rgba(147,51,234,0.3)]">คำทำนายของเจ้า: {JSON.stringify(answers)}</div>;
+    return <ResultYan answers={answers} />;
     }
 
     const currentQuestion = questions.find(q => q.id === currentId);

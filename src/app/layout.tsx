@@ -2,6 +2,7 @@ import type React from "react"
 import "./globals.css"
 import type { Metadata } from "next"
 import { Noto_Sans_Thai } from "next/font/google"
+import { AudioProvider } from "@/contexts/AudioContext"
 
 // Properly load the Thai font using Next.js font system
 const notoSansThai = Noto_Sans_Thai({
@@ -12,8 +13,8 @@ const notoSansThai = Noto_Sans_Thai({
 })
 
 export const metadata: Metadata = {
-  title: "Thai Fortune App",
-  description: "Check your fortune today",
+  title: "Duang Suay อ่านว่าดวงสวย",
+  description: "ดวงซวยหรือดวงสวย",
 }
 
 export default function RootLayout({
@@ -22,8 +23,12 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="th" className={notoSansThai.variable}>
-      <body>{children}</body>
+    <html lang="en">
+      <body className={notoSansThai.className}>
+        <AudioProvider>
+          {children}
+        </AudioProvider>
+      </body>
     </html>
   )
 }

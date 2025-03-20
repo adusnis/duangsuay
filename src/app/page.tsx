@@ -49,11 +49,11 @@ export default function Home() {
             </Link>
           </button>
 
-          <button className="w-full bg-gradient-to-r from-[#4a2b6b] to-[#2b1645] text-[#e0c7ff] py-4 px-6 rounded-full text-xl font-medium transition-all hover:shadow-[0_0_15px_rgba(224,199,255,0.3)] hover:scale-105">
+          {/* <button className="w-full bg-gradient-to-r from-[#4a2b6b] to-[#2b1645] text-[#e0c7ff] py-4 px-6 rounded-full text-xl font-medium transition-all hover:shadow-[0_0_15px_rgba(224,199,255,0.3)] hover:scale-105">
             <Link href="/sorb/">
               🌟 หยั่งรู้ผลสอบ
             </Link>
-          </button>
+          </button> */}
         </div>
       </div>
     </div>
