@@ -1,8 +1,9 @@
-import type React from "react"
+// layout.tsx (server component)
 import "./globals.css"
 import type { Metadata } from "next"
 import { Noto_Sans_Thai } from "next/font/google"
 import { AudioProvider } from "@/contexts/AudioContext"
+import ClientLayout from './client-layout'
 
 // Properly load the Thai font using Next.js font system
 const notoSansThai = Noto_Sans_Thai({
@@ -26,7 +27,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={notoSansThai.className}>
         <AudioProvider>
-          {children}
+          <ClientLayout>
+            {children}
+          </ClientLayout>
         </AudioProvider>
       </body>
     </html>

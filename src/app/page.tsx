@@ -1,8 +1,10 @@
 "use client"
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import { useAudio } from '@/contexts/AudioContext';
 
 export default function Home() {
+  const { playEffect } = useAudio();
   const [fireflies, setFireflies] = useState<{ id: number; top: string; left: string; delay: string }[]>([]);
 
   useEffect(() => {
@@ -14,6 +16,10 @@ export default function Home() {
     }));
     setFireflies(newFireflies);
   }, []);
+
+  const handleButtonClick = () => {
+    playEffect('wind');
+  };
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-[#0a0a12] px-4 py-8 relative overflow-hidden">
@@ -33,21 +39,25 @@ export default function Home() {
       <div className="w-[80%] max-w-md flex flex-col items-center space-y-12 relative z-10">
         <h1 className="text-[#e0c7ff] text-3xl font-medium text-center italic" 
             style={{textShadow: '0 0 10px rgba(224, 199, 255, 0.5)'}}>
-          ✨ วันนี้คุณดวงชวยหรือยัง? ✨
+          ✨ ดวงซวยหรอ? ✨
         </h1>
 
         <div className="w-full flex flex-col space-y-8">
-          <button className="w-full bg-gradient-to-r from-[#4a2b6b] to-[#2b1645] text-[#e0c7ff] py-4 px-6 rounded-full text-xl font-medium transition-all hover:shadow-[0_0_15px_rgba(224,199,255,0.3)] hover:scale-105">
-            <Link href="/wadduang/">
-              🔮 วัดดวง
-            </Link>
-          </button>
+          <Link 
+            href="/wadduang/"
+            className="w-full bg-gradient-to-r from-[#4a2b6b] to-[#2b1645] text-[#e0c7ff] py-4 px-6 rounded-full text-xl font-medium transition-all hover:shadow-[0_0_15px_rgba(224,199,255,0.3)] hover:scale-105 text-center"
+            onClick={handleButtonClick}
+          >
+            🔮 วัดดวง
+          </Link>
 
-          <button className="w-full bg-gradient-to-r from-[#4a2b6b] to-[#2b1645] text-[#e0c7ff] py-4 px-6 rounded-full text-xl font-medium transition-all hover:shadow-[0_0_15px_rgba(224,199,255,0.3)] hover:scale-105">
-            <Link href="/yun/">
-              ⭐ ยันต์แก้ดวง
-            </Link>
-          </button>
+          <Link 
+            href="/yun/"
+            className="w-full bg-gradient-to-r from-[#4a2b6b] to-[#2b1645] text-[#e0c7ff] py-4 px-6 rounded-full text-xl font-medium transition-all hover:shadow-[0_0_15px_rgba(224,199,255,0.3)] hover:scale-105 text-center"
+            onClick={handleButtonClick}
+          >
+            ⭐ ยันต์แก้ดวง
+          </Link>
 
           {/* <button className="w-full bg-gradient-to-r from-[#4a2b6b] to-[#2b1645] text-[#e0c7ff] py-4 px-6 rounded-full text-xl font-medium transition-all hover:shadow-[0_0_15px_rgba(224,199,255,0.3)] hover:scale-105">
             <Link href="/sorb/">

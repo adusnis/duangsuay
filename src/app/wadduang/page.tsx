@@ -1,15 +1,23 @@
 "use client"
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import Dice from '@/components/Dice';
 import Link from 'next/link';
 import { Home } from "lucide-react";
 
 export default function Wadduang() {
-    const [results, setResults] = useState<number[]>([]);
+    const router = useRouter();
+    const [diceResults, setDiceResults] = useState<number[]>([]);
+    const [isRolling, setIsRolling] = useState(false);
+    const [showResult, setShowResult] = useState(false);
     const [currentResult, setCurrentResult] = useState<number | null>(null);
     const [currentIndex, setCurrentIndex] = useState<number>(0);
     const [rolling, setRolling] = useState<boolean>(false);
-    const [isRolling, setIsRolling] = useState<boolean>(false);
+
+    useEffect(() => {
+        setDiceResults([]);
+        setShowResult(false);
+    }, []);
 
     const getAspectText = (index: number) => {
         switch (index) {
@@ -23,7 +31,7 @@ export default function Wadduang() {
     const rollDice = () => {
         setRolling(true);
         const newResults = Array.from({ length: 3 }, () => Math.floor(Math.random() * 6) + 1);
-        setResults(newResults);
+        setDiceResults(newResults);
         setCurrentIndex(0);
         setCurrentResult(null);
         rollNextDice(newResults, 0);
@@ -70,9 +78,9 @@ export default function Wadduang() {
         <div className="flex flex-col items-center justify-center min-h-screen bg-[#0a0a12] px-4 py-8 relative overflow-hidden">
             <h1 className="text-[#e0c7ff] text-3xl font-medium text-center italic" 
                 style={{textShadow: '0 0 10px rgba(224, 199, 255, 0.5)'}}>
-                ✨ วัดดวงของคุณ ✨
+                🪄 ดวงของเจ้า 🔮
             </h1>
-            {!results.length && (
+            {!diceResults.length && (
                 <button 
                     className="mt-8 bg-gradient-to-r from-[#4a2b6b] to-[#2b1645] text-[#e0c7ff] py-4 px-6 rounded-full text-xl font-medium transition-all hover:shadow-[0_0_15px_rgba(224,199,255,0.3)] hover:scale-105"
                     onClick={rollDice}
@@ -92,14 +100,17 @@ export default function Wadduang() {
                     />
                 </div>
             )}
-            {!rolling && results.length > 0 && (
+            {!rolling && diceResults.length > 0 && (
                 <div className="mt-8 flex flex-col items-center">
                     <div className="text-[#e0c7ff] text-xl mb-8">
-                        <p>ดวงชีวิต: {getResultText(results[0])}</p>
-                        <p>ดวงการเรียน: {getResultText(results[1])}</p>
-                        <p>ดวงความรัก: {getResultText(results[2])}</p>
+                        <p>ดวงชีวิต: {getResultText(diceResults[0])}</p>
+                        <p>ดวงการเรียน: {getResultText(diceResults[1])}</p>
+                        <p>ดวงความรัก: {getResultText(diceResults[2])}</p>
                     </div>
-                    <Link href="/" className="bg-gradient-to-r from-[#4a2b6b] to-[#2b1645] text-[#e0c7ff] py-4 px-6 rounded-full text-xl font-medium transition-all hover:shadow-[0_0_15px_rgba(224,199,255,0.3)] hover:scale-105 flex items-center gap-2">
+                    <Link 
+                        href="/" 
+                        className="bg-gradient-to-r from-[#4a2b6b] to-[#2b1645] text-[#e0c7ff] py-4 px-6 rounded-full text-xl font-medium transition-all hover:shadow-[0_0_15px_rgba(224,199,255,0.3)] hover:scale-105 flex items-center gap-2"
+                    >
                         <Home size={24} />
                     </Link>
                 </div>
